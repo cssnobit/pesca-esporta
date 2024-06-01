@@ -6,6 +6,8 @@ import java.sql.Time;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +24,7 @@ public class Reservation {
 	@EqualsAndHashCode.Include
 	private Long id;
 	
+	@Column(nullable = false)
 	private Integer qntPeople;
 	
 	@Column(nullable = false)
@@ -30,6 +33,8 @@ public class Reservation {
 	@Column(nullable = false)
 	private Time occupationTime;
 	
+	@Column(columnDefinition = "VARCHAR(15)")
+	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 	
 	@Column(nullable = false, scale = 2)

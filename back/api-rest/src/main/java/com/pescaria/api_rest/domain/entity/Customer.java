@@ -1,10 +1,14 @@
 package com.pescaria.api_rest.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,4 +30,7 @@ public class Customer {
 	
 	@Column(nullable = false)
 	private String password;
+	
+	@OneToMany
+	private List<Reservation> reservations = new ArrayList<>();
 }
