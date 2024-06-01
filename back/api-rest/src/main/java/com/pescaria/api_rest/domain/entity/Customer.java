@@ -18,15 +18,12 @@ public class Customer {
 	@EqualsAndHashCode.Include
 	private Long id;
 	
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false)
 	private String fullName;
 	
-	@Column(nullable = false, length = 100, unique = true)
+	@Column(nullable = false, unique = true)
 	private String email;
 	
-	@Column(nullable = false, length = 16)
-	private String password;
-	
 	@Column(nullable = false)
-	private boolean active;
+	private String password;
 }
