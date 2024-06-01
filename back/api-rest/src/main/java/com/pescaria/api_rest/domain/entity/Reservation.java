@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -39,4 +40,8 @@ public class Reservation {
 	
 	@Column(nullable = false, scale = 2)
 	private BigDecimal total;
+	
+	@Column(nullable = false)
+	@ManyToOne
+	private Customer customer;
 }
