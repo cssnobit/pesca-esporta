@@ -15,6 +15,6 @@ public class CustomerService {
 	
 	public Customer getCustomer(Long customerId) {
 		return customerRepository.findById(customerId)
-				.orElseThrow(() -> new RuntimeException("User not found"));
+				.orElseThrow(() -> new RuntimeException("Customer not found"));
 	}
 }
