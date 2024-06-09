@@ -3,6 +3,8 @@ package com.pescaria.api_rest.domain.service;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.pescaria.api_rest.domain.entity.Reservation;
 import com.pescaria.api_rest.domain.entity.ReservationStatus;
 import com.pescaria.api_rest.domain.repository.ReservationRepository;
 import com.pescaria.api_rest.dto.ReservationRequestDTO;
+import com.pescaria.api_rest.dto.ReservationResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +30,19 @@ public class ReservationService {
 	public Reservation getReservation(Long reservationId) {
 		return reservationRepository.findById(reservationId)
 				.orElseThrow(() -> new RuntimeException("reservation not found"));
+	}
+	
+	public List<ReservationResponseDTO> listAllById(Long customerId) {
+		List<Reservation> reservations = reservationRepository.findAllByCustomerId(customerId);
+		List<ReservationResponseDTO> response = new ArrayList<>();
+		reservations.forEach(reservation -> {
+			response.add(new ReservationResponseDTO(reservation.getQntPeople(),
+					reservation.getOccupationDate(),
+					reservation.getOccupationTime(),
+					reservation.getStatus()));
+		});
+		
+		return response;
 	}
 	
 	public Reservation save(ReservationRequestDTO request) {
@@ -70,9 +86,11 @@ public class ReservationService {
 	}
 	
 	private boolean validDateTime(Date occDate, Time occTime) {
-		if(validDate(occDate) && occTime.after(currentTime)) {
-			return true;
+		if(!validDate(occDate)) {
+			return false;
+		} else if(occDate.equals(currentDate) && occTime.before(currentTime)) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 }

@@ -1,5 +1,7 @@
 package com.pescaria.api_rest.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +22,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
+	
 	private final ReservationService reservationService;
 	
-	@GetMapping("/{reservationId}")
-	public ResponseEntity<?> getReservation(@PathVariable Long reservationId) {
-		try {
-			Reservation reservation = reservationService.getReservation(reservationId);
-			return ResponseEntity.ok(reservation);
-		} catch(RuntimeException e) {			
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(e.getMessage());
-		}
+	// find all reservations by customer id
+	@GetMapping("/{customerId}")
+	public List<ReservationResponseDTO> listAllByCustomerId(@PathVariable Long customerId) {
+		return reservationService.listAllById(customerId);
 	}
 	
 	@PutMapping
@@ -39,7 +37,8 @@ public class ReservationController {
 			Reservation newReservation = reservationService.save(request);
 			
 			ReservationResponseDTO response = new ReservationResponseDTO(newReservation.getQntPeople(),
-					newReservation.getOccupationDate(), newReservation.getOccupationTime());
+					newReservation.getOccupationDate(), newReservation.getOccupationTime(),
+					newReservation.getStatus().RESERVED);
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch(RuntimeException e) {
