@@ -28,7 +28,7 @@ public class ReservationController {
 	// find all reservations by customer id
 	@GetMapping("/{customerId}")
 	public List<ReservationResponseDTO> listAllByCustomerId(@PathVariable Long customerId) {
-		return reservationService.listAllById(customerId);
+		return reservationService.listAllByCustomerId(customerId);
 	}
 	
 	@PutMapping
@@ -38,11 +38,11 @@ public class ReservationController {
 			
 			ReservationResponseDTO response = new ReservationResponseDTO(newReservation.getQntPeople(),
 					newReservation.getOccupationDate(), newReservation.getOccupationTime(),
-					newReservation.getStatus().RESERVED);
+					newReservation.getStatus());
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
-		} catch(RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch(IllegalArgumentException e) {
+			throw new IllegalArgumentException(e.getMessage());
 		}
 		
 	}

@@ -3,6 +3,7 @@ package com.pescaria.api_rest.infra.timezone;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -34,5 +35,10 @@ public class TimeZoneConfig {
 	public Time time(ZonedDateTime zonedDateTime) {	
 		return Time.valueOf(zonedDateTime.toLocalTime());
 	}
-		
+	
+	@Autowired
+	@Bean
+	public LocalDateTime localDateTime(ZonedDateTime zonedDateTime) {
+		return LocalDateTime.now(zonedDateTime.getZone());
+	}
 }

@@ -32,7 +32,7 @@ public class ReservationService {
 				.orElseThrow(() -> new RuntimeException("reservation not found"));
 	}
 	
-	public List<ReservationResponseDTO> listAllById(Long customerId) {
+	public List<ReservationResponseDTO> listAllByCustomerId(Long customerId) {
 		List<Reservation> reservations = reservationRepository.findAllByCustomerId(customerId);
 		List<ReservationResponseDTO> response = new ArrayList<>();
 		reservations.forEach(reservation -> {
