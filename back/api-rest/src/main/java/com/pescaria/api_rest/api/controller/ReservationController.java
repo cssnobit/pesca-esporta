@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pescaria.api_rest.domain.entity.Reservation;
 import com.pescaria.api_rest.domain.service.ReservationService;
 import com.pescaria.api_rest.dto.ReservationRequestDTO;
+import com.pescaria.api_rest.dto.ReservationResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,8 +37,11 @@ public class ReservationController {
 	public ResponseEntity<?> booking(@RequestBody ReservationRequestDTO request) {
 		try {
 			Reservation newReservation = reservationService.save(request);
+			
+			ReservationResponseDTO response = new ReservationResponseDTO(newReservation.getQntPeople(),
+					newReservation.getOccupationDate(), newReservation.getOccupationTime());
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(newReservation);
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch(RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
