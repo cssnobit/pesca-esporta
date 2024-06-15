@@ -37,6 +37,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		
 	}
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		ProblemType problemType = ProblemType.INTERNAL_ERROR;
+		String detail = "Sorry. There was a internal error in our server. If problem persists, "
+				+ "please contact a admin!";
+		
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
 	@ExceptionHandler(ModelException.class)
 	public ResponseEntity<Object> handleModelException(ModelException ex, 
 			WebRequest request) {
