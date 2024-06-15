@@ -86,9 +86,7 @@ public class ReservationService {
 	}
 	
 	private boolean validDateTime(Date occDate, Time occTime) {
-		if(!validDate(occDate)) {
-			return false;
-		} else if(occDate.equals(currentDate) && occTime.before(currentTime)) {
+		if(occDate.equals(currentDate) && occTime.before(currentTime)) {
 			return false;
 		}
 		return true;

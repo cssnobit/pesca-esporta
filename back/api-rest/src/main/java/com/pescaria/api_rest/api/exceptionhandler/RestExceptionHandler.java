@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.pescaria.api_rest.domain.exception.ModelException;
+
 import lombok.RequiredArgsConstructor;
 
 @ControllerAdvice
@@ -33,6 +35,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 		
+	}
+	
+	@ExceptionHandler(ModelException.class)
+	public ResponseEntity<Object> handleModelException(ModelException ex, 
+			WebRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		ProblemType problemType = ProblemType.MODEL_ERROR;
+		String detail = ex.getMessage();
+		
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 	
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,

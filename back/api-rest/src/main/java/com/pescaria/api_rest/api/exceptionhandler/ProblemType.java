@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ProblemType {
-	INVALID_ARGUMENT("Invalid argument", "/invalid-argument");
+	INVALID_ARGUMENT("Invalid argument", "/invalid-argument"),
+	MODEL_ERROR("Model Error", "/model-error");
 	
 	private String title;
 	private String uri;

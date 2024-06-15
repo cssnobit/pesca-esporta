@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pescaria.api_rest.domain.entity.Reservation;
+import com.pescaria.api_rest.domain.exception.CustomerNotFoundException;
+import com.pescaria.api_rest.domain.exception.ModelException;
 import com.pescaria.api_rest.domain.service.ReservationService;
 import com.pescaria.api_rest.dto.ReservationRequestDTO;
 import com.pescaria.api_rest.dto.ReservationResponseDTO;
@@ -43,6 +45,8 @@ public class ReservationController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch(IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
+		} catch(CustomerNotFoundException e) {
+			throw new ModelException(e.getMessage());
 		}
 		
 	}
