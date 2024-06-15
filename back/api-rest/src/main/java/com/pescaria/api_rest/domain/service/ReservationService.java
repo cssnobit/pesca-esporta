@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.pescaria.api_rest.domain.entity.Customer;
 import com.pescaria.api_rest.domain.entity.Reservation;
 import com.pescaria.api_rest.domain.entity.ReservationStatus;
+import com.pescaria.api_rest.domain.exception.ReservationNotFoundException;
 import com.pescaria.api_rest.domain.repository.ReservationRepository;
 import com.pescaria.api_rest.dto.ReservationRequestDTO;
 import com.pescaria.api_rest.dto.ReservationResponseDTO;
@@ -25,11 +26,11 @@ public class ReservationService {
 	private final CustomerService customerService;
 	private final Date currentDate;
 	private final Time currentTime;
-	private final Double RESERVATION_PRICE = 20.00;
+	private final Double RESERVATION_PRICE = 30.00;
 	
 	public Reservation getReservation(Long reservationId) {
 		return reservationRepository.findById(reservationId)
-				.orElseThrow(() -> new RuntimeException("reservation not found"));
+				.orElseThrow(() -> new ReservationNotFoundException(reservationId));
 	}
 	
 	public List<ReservationResponseDTO> listAllByCustomerId(Long customerId) {
@@ -39,6 +40,7 @@ public class ReservationService {
 			response.add(new ReservationResponseDTO(reservation.getQntPeople(),
 					reservation.getOccupationDate(),
 					reservation.getOccupationTime(),
+					reservation.getTotal(),
 					reservation.getStatus()));
 		});
 		
